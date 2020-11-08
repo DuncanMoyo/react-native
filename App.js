@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import GoalInput from "./components/GoalInput";
 import GoalItem from "./components/GoalItem";
 
@@ -19,6 +15,12 @@ export default function App() {
     ]);
   };
 
+  const removeGoalHandler = (goalId) => {
+    setCourseGoals((currentGoals) => {
+      return currentGoals.filter((goal) => goal.id !== goalId);
+    });
+  };
+
   return (
     <View style={styles.screen}>
       <GoalInput onAddGoal={addGoalHandler} />
@@ -26,7 +28,11 @@ export default function App() {
         keyExtractor={(item, index) => item.id}
         data={courseGoals}
         renderItem={(itemData) => (
-          <GoalItem title={itemData.item.value} onDelete={() => console.log('Does this even wrk?')}/>
+          <GoalItem
+            id={itemData.item.id}
+            title={itemData.item.value}
+            onDelete={removeGoalHandler}
+          />
         )}
       ></FlatList>
     </View>
@@ -36,5 +42,5 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     padding: 50,
-  }
+  },
 });
