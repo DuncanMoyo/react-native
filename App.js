@@ -2,42 +2,26 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   View,
-  Button,
-  TextInput,
-  Text,
-  ScrollView,
   FlatList,
 } from "react-native";
+import GoalInput from "./components/GoalInput";
 import GoalItem from "./components/GoalItem";
 
 export default function App() {
-  const [enteredGoal, setEnteredGoal] = useState("");
   const [courseGoals, setCourseGoals] = useState([]);
 
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoal(enteredText);
-  };
-
-  const addGoalHandler = () => {
+  const addGoalHandler = (goalTitle) => {
     // console.log(enteredGoal);
     // setCourseGoals([...courseGoals, enteredGoal]); alse works but function below is better
     setCourseGoals((currentGoals) => [
       ...currentGoals,
-      { key: Math.random().toString(), value: enteredGoal },
+      { key: Math.random().toString(), value: goalTitle },
     ]);
   };
 
   return (
     <View style={styles.screen}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Course Goal"
-          style={styles.input}
-          onChangeText={goalInputHandler}
-          value={enteredGoal}
-        />
-        <Button title="ADD" onPress={addGoalHandler} />
-      </View>
+      <GoalInput onAddGoal={addGoalHandler} />
       <FlatList
         data={courseGoals}
         renderItem={(itemData) => (
@@ -51,16 +35,5 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     padding: 50,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  input: {
-    padding: 10,
-    borderColor: "black",
-    borderWidth: 1,
-    width: "80%",
   }
 });
